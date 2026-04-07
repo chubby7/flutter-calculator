@@ -66,11 +66,146 @@ class _CalcPageState extends State<CalcPage> {
                     topRight: Radius.circular(30.0),
                   ),
                 ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 60.0,
+                            width: 250.0,
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade900,
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text('AC'),
+                                Text('+/-'),
+                                Text('%'),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Calc_Button(
+                                character: '1',
+                              ),
+                              SizedBox(width: 20,),
+                              Calc_Button(
+                                character: '2',
+                              ),
+                              SizedBox(width: 20,),
+                              Calc_Button(
+                                character: '3',
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20,),
+                          Row(
+                            children: [
+                              Calc_Button(
+                                character: '4',
+                              ),
+                              SizedBox(width: 20,),
+                              Calc_Button(
+                                character: '5',
+                              ),
+                              SizedBox(width: 20,),
+                              Calc_Button(
+                                character: '6',
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20,),
+                          Row(
+                            children: [
+                              Calc_Button(
+                                character: '7',
+                              ),
+                              SizedBox(width: 20,),
+                              Calc_Button(
+                                character: '8',
+                              ),
+                              SizedBox(width: 20,),
+                              Calc_Button(
+                                character: '9',
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20,),
+                          Row(
+                            children: [
+                              Calc_Button(
+                                character: '.',
+                              ),
+                              SizedBox(width: 20,),
+                              Calc_Button(
+                                character: '0',
+                              ),
+                              SizedBox(width: 20,),
+                              Calc_Button(
+                                character: '00',
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 20,),
+                      Container(
+                        height: 250.0,
+                        width: 75.0,
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade900,
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('/'),
+                            Text('x'),
+                            Text('-'),
+                            Text('+'),
+                            Text('='),
+
+                          ],
+                        ),
+                      ),
+                    ],
+
+                  ),
+
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class Calc_Button extends StatelessWidget {
+   Calc_Button({
+    super.key, required this.character
+  });
+
+  String character;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+       height: 75.0,
+       width: 75.0,
+      decoration: BoxDecoration(
+        color: Colors.blue.shade900,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: Center(child: Text(character)),
     );
   }
 }
