@@ -51,9 +51,9 @@ class _CalcPageState extends State<CalcPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 50.0),
-                  child: Text('=', style: kResultTextsyle),
+                  child: Text('=', style: kResultTextStyle),
                 ),
-                Text('2700', style: kResultTextsyle),
+                Text('2700', style: kResultTextStyle),
               ],
             ),
             SizedBox(height: 10.0),
@@ -70,109 +70,138 @@ class _CalcPageState extends State<CalcPage> {
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 60.0,
-                            width: 250.0,
-                            decoration: BoxDecoration(
-                              color: Colors.blue.shade900,
-                              borderRadius: BorderRadius.circular(30.0),
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: 70,
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade900,
+                                borderRadius: BorderRadius.circular(100.0),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text('AC', style: kButtonTextStyle,),
+                                  Text('+/-', style: kButtonTextStyle,),
+                                  Text('%', style:  kButtonTextStyle,),
+                                ],
+                              ),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            SizedBox(height: 10),
+                            Row(
                               children: [
-                                Text('AC'),
-                                Text('+/-'),
-                                Text('%'),
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '1',
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '2',
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '3',
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                          SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Calc_Button(
-                                character: '1',
-                              ),
-                              SizedBox(width: 20,),
-                              Calc_Button(
-                                character: '2',
-                              ),
-                              SizedBox(width: 20,),
-                              Calc_Button(
-                                character: '3',
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20,),
-                          Row(
-                            children: [
-                              Calc_Button(
-                                character: '4',
-                              ),
-                              SizedBox(width: 20,),
-                              Calc_Button(
-                                character: '5',
-                              ),
-                              SizedBox(width: 20,),
-                              Calc_Button(
-                                character: '6',
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20,),
-                          Row(
-                            children: [
-                              Calc_Button(
-                                character: '7',
-                              ),
-                              SizedBox(width: 20,),
-                              Calc_Button(
-                                character: '8',
-                              ),
-                              SizedBox(width: 20,),
-                              Calc_Button(
-                                character: '9',
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20,),
-                          Row(
-                            children: [
-                              Calc_Button(
-                                character: '.',
-                              ),
-                              SizedBox(width: 20,),
-                              Calc_Button(
-                                character: '0',
-                              ),
-                              SizedBox(width: 20,),
-                              Calc_Button(
-                                character: '00',
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 20,),
-                      Container(
-                        height: 250.0,
-                        width: 75.0,
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade900,
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('/'),
-                            Text('x'),
-                            Text('-'),
-                            Text('+'),
-                            Text('='),
-
+                            SizedBox(height: 10,),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '4',
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '5',
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '6',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10,),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '7',
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '8',
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '9',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10,),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '.',
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '0',
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Expanded(
+                                  child: Calc_Button(
+                                    character: '00',
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
+                        ),
+                      ),
+                      SizedBox(width: 10,),
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                           width: 75.0,
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade900,
+                            borderRadius: BorderRadius.circular(100.0),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text('/', style: kButtonTextStyle,),
+                              Text('x', style: kButtonTextStyle,),
+                              Text('-', style: kButtonTextStyle,),
+                              Text('+', style: kButtonTextStyle,),
+                              Text('=', style: kButtonTextStyle,),
+
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -198,14 +227,16 @@ class Calc_Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-       height: 75.0,
-       width: 75.0,
-      decoration: BoxDecoration(
-        color: Colors.blue.shade900,
-        borderRadius: BorderRadius.circular(100),
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Container(
+         padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.blue.shade900,
+          shape: BoxShape.circle,
+        ),
+        child: Center(child: Text(character, style: kButtonTextStyle),)
       ),
-      child: Center(child: Text(character)),
     );
   }
 }
