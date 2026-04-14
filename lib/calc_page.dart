@@ -15,11 +15,17 @@ class _CalcPageState extends State<CalcPage> {
     return Expanded(
       child: Row(
         children: [
-          Expanded(child: Calc_Button(character: chars[0])),
-          const SizedBox(width: 10), // The horizontal space you observed
-          Expanded(child: Calc_Button(character: chars[1])),
-          const SizedBox(width: 10), // The horizontal space you observed
-          Expanded(child: Calc_Button(character: chars[2])),
+          Expanded(
+            child: Calc_Button(character: chars[0], onTap: () {}),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Calc_Button(character: chars[1], onTap: () {}),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Calc_Button(character: chars[2], onTap: () {}),
+          ),
         ],
       ),
     );
@@ -75,86 +81,161 @@ class _CalcPageState extends State<CalcPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.4),
+                        offset: Offset(4, 4),
+                        blurRadius: 10,
+                      ),
+                      BoxShadow(
+                        color: Colors.white.withValues(alpha: 0.05),
+                        offset: Offset(-2, -2),
+                        blurRadius: 6,
+                      ),
+                    ],
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0),
-                  ),
+                 ),
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      Color(0xFF2D6F95), // lighter blue
+                      Color(0xFF0F2F4F), // darker blue
+                    ],
+                  )
                 ),
 
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      children: [
-                        // Left Side: Top bar + Number Grid
-                        Expanded(
-                          flex: 3,
-                          child: Column(
-                            children: [
-                              // Row 0: AC, +/-, %
-                              // Using AspectRatio here keeps these consistent with the circles below
-                              AspectRatio(
-                                aspectRatio: 3,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.shade900,
-                                    borderRadius: BorderRadius.circular(100.0),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(child: Center(child: Text('AC', style: kButtonTextStyle))),
-                                      Expanded(child: Center(child: Text('+/-', style: kButtonTextStyle))),
-                                      Expanded(child: Center(child: Text('%', style: kButtonTextStyle))),
-                                    ],
-                                  ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    children: [
+                      // Left Side: Top bar + Number Grid
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          children: [
+                            // Row 0: AC, +/-, %
+                            // Using AspectRatio here keeps these consistent with the circles below
+                            AspectRatio(
+                              aspectRatio: 3,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.shade900,
+                                  borderRadius: BorderRadius.circular(100.0),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Calc_Button(
+                                        onTap: () {
+                                          print('AC Pressed');
+                                        },
+                                        character: 'AC',
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Calc_Button(
+                                        onTap: () {
+                                          print('+/-, pressed');
+                                        },
+                                        character: '+/-',
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Calc_Button(
+                                        onTap: () {
+                                          print('% pressed');
+                                        },
+                                        character: '%',
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
+                            ),
 
-                              // This is the magic part: Use a Column of Rows instead of a Grid
-                              // Expanded forces this section to fill the remaining height exactly
+                            // This is the magic part: Use a Column of Rows instead of a Grid
+                            // Expanded forces this section to fill the remaining height exactly
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  buildButtonRow(['1', '2', '3']),
+                                  buildButtonRow(['4', '5', '6']),
+                                  buildButtonRow(['7', '8', '9']),
+                                  buildButtonRow(['.', '0', '00']),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(
+                        width: 15,
+                      ), // Spacing between numbers and operators
+                      // Right Side: Operator Pillar
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade900,
+                            borderRadius: BorderRadius.circular(100.0),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
                               Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    buildButtonRow(['1', '2', '3']),
-                                    buildButtonRow(['4', '5', '6']),
-                                    buildButtonRow(['7', '8', '9']),
-                                    buildButtonRow(['.', '0', '00']),
-                                  ],
+                                child: Calc_Button(
+                                  onTap: () {
+                                    print('÷ Pressed');
+                                  },
+                                  character: '÷',
+                                ),
+                              ),
+                              Expanded(
+                                child: Calc_Button(
+                                  onTap: () {
+                                    print('× pressed');
+                                  },
+                                  character: '×',
+                                ),
+                              ),
+                              Expanded(
+                                child: Calc_Button(
+                                  onTap: () {
+                                    print('- pressed');
+                                  },
+                                  character: '-',
+                                ),
+                              ),
+                              Expanded(
+                                child: Calc_Button(
+                                  onTap: () {
+                                    print('+ pressed');
+                                  },
+                                  character: '+',
+                                ),
+                              ),
+                              Expanded(
+                                child: Calc_Button(
+                                  onTap: () {
+                                    print('= Pressed');
+                                  },
+                                  character: '=',
+
                                 ),
                               ),
                             ],
                           ),
                         ),
-
-                        const SizedBox(width: 15), // Spacing between numbers and operators
-
-                        // Right Side: Operator Pillar
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.blue.shade900,
-                              borderRadius: BorderRadius.circular(100.0),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(child: Center(child: Text('÷', style: kButtonTextStyle))),
-                                Expanded(child: Center(child: Text('×', style: kButtonTextStyle))),
-                                Expanded(child: Center(child: Text('-', style: kButtonTextStyle))),
-                                Expanded(child: Center(child: Text('+', style: kButtonTextStyle))),
-                                Expanded(child: Center(child: Text('=', style: kButtonTextStyle))),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-
-
-
+                ),
               ),
             ),
           ],
@@ -165,23 +246,26 @@ class _CalcPageState extends State<CalcPage> {
 }
 
 class Calc_Button extends StatelessWidget {
-  Calc_Button({super.key, required this.character});
+  Calc_Button({super.key, required this.onTap, required this.character});
 
-  String character;
+  final String character;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
-      child: Container(
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.blue.shade900,
-          shape: BoxShape.circle,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Color(0xFF123E5C),
+            shape: BoxShape.circle,
+          ),
+          child: Center(child: Text(character, style: kButtonTextStyle)),
         ),
-        child: Center(child: Text(character, style: kButtonTextStyle)),
       ),
     );
   }
 }
-
