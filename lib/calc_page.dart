@@ -1,6 +1,7 @@
 import 'package:calculator/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:calculator/class/customswitch button.dart';
+import 'package:flutter/rendering.dart';
 
 class CalcPage extends StatefulWidget {
   @override
@@ -8,23 +9,26 @@ class CalcPage extends StatefulWidget {
 }
 
 class _CalcPageState extends State<CalcPage> {
-  bool light = true;
 
   // Helper method to create the number rows
-  Widget buildButtonRow(List<String> chars) {
+  Widget buildButtonRow(List<String> chars, Function(String) onButtonTap) {
     return Expanded(
       child: Row(
         children: [
           Expanded(
-            child: Calc_Button(character: chars[0], onTap: () {}),
+            child: Calc_Button(character: chars[0], onTap: () => onButtonTap(chars[0])),
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: Calc_Button(character: chars[1], onTap: () {}),
+            child: Calc_Button(character: chars[1], onTap: () => onButtonTap(chars[1])),
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: Calc_Button(character: chars[2], onTap: () {}),
+            child: Calc_Button(character: chars[2], onTap: () => onButtonTap(chars[2])),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Calc_Button(character: chars[3], onTap: () => onButtonTap(chars[3])),
           ),
         ],
       ),
@@ -78,6 +82,9 @@ class _CalcPageState extends State<CalcPage> {
               ],
             ),
             SizedBox(height: 10.0),
+
+
+            // This is the Button container
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
@@ -109,131 +116,64 @@ class _CalcPageState extends State<CalcPage> {
 
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      // Left Side: Top bar + Number Grid
-                      Expanded(
-                        flex: 3,
-                        child: Column(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: LayoutBuilder(
+                      builder: (context, constraints){
+                        /// worked
+                        /// Calculate the size of a single "cell"
+                        double cellHeight = constraints.maxHeight / 5;
+                        double cellWidth = constraints.maxWidth / 4;
+
+                        double internalPadding = 6.0;
+
+                        return Stack(
                           children: [
-                            // Row 0: AC, +/-, %
-                            // Using AspectRatio here keeps these consistent with the circles below
-                            AspectRatio(
-                              aspectRatio: 3,
+                            /// 🔵 TOP PILL (AC row)
+                            Positioned(
+                              top: 6,
+                              left: 6,
+                              width: (cellWidth * 3) - (internalPadding * 2),
+                              height: cellHeight - (internalPadding * 2),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(1000),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            /// 🔵 RIGHT PILL (operators)
+                            Positioned(
+                              top: 12,
+                              right: 0.5,
+                              bottom: 12,
+                              width: cellWidth - (internalPadding * 1.5),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.blue.shade900,
-                                  borderRadius: BorderRadius.circular(100.0),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Calc_Button(
-                                        onTap: () {
-                                          print('AC Pressed');
-                                        },
-                                        character: 'AC',
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Calc_Button(
-                                        onTap: () {
-                                          print('+/-, pressed');
-                                        },
-                                        character: '+/-',
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Calc_Button(
-                                        onTap: () {
-                                          print('% pressed');
-                                        },
-                                        character: '%',
-                                      ),
-                                    ),
-                                  ],
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(1000),
                                 ),
                               ),
                             ),
-
-                            // This is the magic part: Use a Column of Rows instead of a Grid
-                            // Expanded forces this section to fill the remaining height exactly
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  buildButtonRow(['1', '2', '3']),
-                                  buildButtonRow(['4', '5', '6']),
-                                  buildButtonRow(['7', '8', '9']),
-                                  buildButtonRow(['.', '0', '00']),
-                                ],
-                              ),
+                            Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceEvenly,
+                              children: [
+                                buildButtonRow(['AC', '+/-', '%', '÷'], (value) {print(value);}),
+                                buildButtonRow(['1', '2', '3', '×'], (value) {print(value);}),
+                                buildButtonRow(['4', '5', '6', '-'], (value) {print(value);}),
+                                buildButtonRow(['7', '8', '9', '+'], (value) {print(value);}),
+                                buildButtonRow(['.', '0', '00', '='], (value) {print(value);}),
+                              ],
                             ),
                           ],
-                        ),
-                      ),
+                        );
+                      },
 
-                      const SizedBox(
-                        width: 15,
-                      ), // Spacing between numbers and operators
-                      // Right Side: Operator Pillar
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade900,
-                            borderRadius: BorderRadius.circular(100.0),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Expanded(
-                                child: Calc_Button(
-                                  onTap: () {
-                                    print('÷ Pressed');
-                                  },
-                                  character: '÷',
-                                ),
-                              ),
-                              Expanded(
-                                child: Calc_Button(
-                                  onTap: () {
-                                    print('× pressed');
-                                  },
-                                  character: '×',
-                                ),
-                              ),
-                              Expanded(
-                                child: Calc_Button(
-                                  onTap: () {
-                                    print('- pressed');
-                                  },
-                                  character: '-',
-                                ),
-                              ),
-                              Expanded(
-                                child: Calc_Button(
-                                  onTap: () {
-                                    print('+ pressed');
-                                  },
-                                  character: '+',
-                                ),
-                              ),
-                              Expanded(
-                                child: Calc_Button(
-                                  onTap: () {
-                                    print('= Pressed');
-                                  },
-                                  character: '=',
-
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
