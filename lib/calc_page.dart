@@ -12,31 +12,34 @@ class CalcPage extends StatefulWidget {
 class _CalcPageState extends State<CalcPage> {
   String input = '';
   String finalResult = '0';
+  String equalsButton = '';
 
   void handleBackspace() {
-    setState(() {
-      if (input.isNotEmpty) {
-        input = input.substring(0, input.length - 1);
-      }
-
-      if (input.isEmpty) {
-        finalResult = '0';
-      }
-    });
+    if (input.isNotEmpty) {
+      input = input.substring(0, input.length - 1);
+    } else {
+      finalResult = '0';
+      equalsButton = '';
+    }
   }
 
-  void handleButton(String value){
+  void handleButton(String value) {
     setState(() {
-      if(value == 'AC'){
+      if (value == 'AC') {
         input = '';
         finalResult = '0';
-      }else if (value == '←'){
+        equalsButton = '';
+      } else if (value == '⌫') {
         handleBackspace();
-      } else if(value == '='){
+      } else if (value == '=') {
         finalResult = calculateResult(input);
-      }else{
+        equalsButton = '=';
+      } else {
         input += value;
       }
+      // if(finalResult.length > 8){
+      //   finalResult = finalResult.substring(0,6);
+      // }
     });
   }
 
@@ -48,10 +51,23 @@ class _CalcPageState extends State<CalcPage> {
       ShuntingYardParser p = ShuntingYardParser();
       Expression exp = p.parse(input);
 
-      ContextModel cm = ContextModel();
       num eval = RealEvaluator().evaluate(exp);
+      double result = eval.toDouble();
 
-      return eval.toString();
+      if (result.abs() >= 1e8) {
+        // Convert to exponential
+        return result
+            .toStringAsExponential(3)
+            .replaceAll('e+', ' × 10^')
+            .replaceAll('e', ' × 10^');
+      } else {
+        // Normal display
+        return result % 1 == 0
+            ? result.toInt().toString()
+            : result.toStringAsFixed(4);
+      }
+
+
     } catch (e) {
       return 'Error';
     }
@@ -114,19 +130,18 @@ class _CalcPageState extends State<CalcPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Switch(value: light, onChanged: (bool value){
-            //   setState(() {
-            //     light = value;
-            //   });
-            //  // TODO 1: WORK ON THIS SWITCH BUTTON, WE WILL BE USING A CUSTOM WIDGET, WE WILL DESIGN OUR OWN SWITCH BUTTON.
-            // }),
             CustomSwitch(),
             SizedBox(height: 100.0),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                input,
-                style: TextStyle(color: Colors.grey, fontSize: 30.0),
+            Container(
+              height: 60.0,
+              alignment: Alignment.bottomRight,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                reverse: true,
+                child: Text(
+                  input,
+                  style: TextStyle(color: Colors.grey, fontSize: 30.0),
+                ),
               ),
             ),
             SizedBox(height: 10.0),
@@ -135,9 +150,15 @@ class _CalcPageState extends State<CalcPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 50.0),
-                  child: Text('=', style: kResultTextStyle),
+                  child: Text(equalsButton, style: kResultTextStyle),
                 ),
-                Text(finalResult, style: kResultTextStyle),
+                Flexible(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    reverse: true,
+                    child: Text(finalResult, style: kResultTextStyle),
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 10.0),
@@ -220,9 +241,7 @@ class _CalcPageState extends State<CalcPage> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                buildButtonRow(['AC', '←', '%', '÷'],(
-                                  value,
-                                ) {
+                                buildButtonRow(['AC', '⌫', '%', '÷'], (value) {
                                   handleButton(value);
                                 }),
                                 buildButtonRow(['1', '2', '3', '×'], (value) {
@@ -253,4 +272,3 @@ class _CalcPageState extends State<CalcPage> {
     );
   }
 }
-
